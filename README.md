@@ -2,7 +2,6 @@ Markdown
 
 # 🎙️ Conversational IVR Modernization Middleware
 
-![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
 
 This project is a **Node.js Express middleware** designed to modernize traditional **digit-based IVR (Interactive Voice Response)** systems. It serves as an **intelligent bridge**, enabling legacy IVR menus to support **modern conversational AI**, allowing users to interact with the system using **natural language voice commands**.
 
@@ -30,6 +29,7 @@ The core of this project is a **dual-mode system** that can handle both **tradit
 
 The project follows a standard and organized structure to separate concerns.
 
+```
 middleware-project/
 ├── controllers/
 │   ├── ivrController.js          # Logic for digit-based IVR requests
@@ -56,6 +56,7 @@ middleware-project/
 ├── index.js                      # The main entry point of the server
 ├── package.json                  # Node.js dependencies and scripts
 └── README.md                     # This project documentation file
+```
 
 
 ---
@@ -80,7 +81,7 @@ middleware-project/
 
 Open your terminal and clone the project to your local machine.
 ```bash
-git clone [https://github.com/your-username/IVR-Conversational-Middleware.git](https://github.com/your-username/IVR-Conversational-Middleware.git)
+git clone [https://github.com/Nehasri99/IVR-Modernisation.git](https://github.com/Nehasri99/IVR-Modernisation.git)
 cd IVR-Conversational-Middleware
 (Remember to replace your-username with your actual GitHub username)
 
