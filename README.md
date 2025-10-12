@@ -177,8 +177,3 @@ The middleware exposes two main endpoints for interacting with the IVR system.
 This project is licensed under the **MIT License**.
 See the **LICENSE** file for more details.
 
-```
-
----
-
-```
