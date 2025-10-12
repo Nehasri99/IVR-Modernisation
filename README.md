@@ -1,4 +1,4 @@
-Conversational IVR Modernization Middleware This project is a sophisticated Node.js Express middleware designed to modernize traditional digit-based IVR (Interactive Voice Response) systems. It serves as an intelligent bridge, enabling legacy IVR menus to support modern conversational AI, allowing users to interact with the system using natural language voice commands.
+**Conversational IVR Modernization Middleware** This project is a sophisticated Node.js Express middleware designed to modernize traditional digit-based IVR (Interactive Voice Response) systems. It serves as an intelligent bridge, enabling legacy IVR menus to support modern conversational AI, allowing users to interact with the system using natural language voice commands.
 
 The core of this project is a dual-mode system that can handle both traditional numeric inputs and natural language queries, routing them to the appropriate backend services while ensuring backward compatibility.
 
