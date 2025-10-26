@@ -1,81 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IVR System - TeamB</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏦 IVR System</h1>
-            <p>Interactive Voice Response - TeamB</p>
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <!-- Link to your CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Phone Container -->
+    <div class="phone">
+      <!-- Simulated Status Bar -->
+      <div class="status-bar glass">
+        <span id="time">10:04</span>
+        <div>
+          <i class="fas fa-signal"></i>
+          <i class="fas fa-wifi"></i>
+          <i class="fas fa-battery-full"></i>
+        </div>
+      </div>
+
+      <!-- Call Screen (Initial View) -->
+      <div id="call-screen" class="screen active fade-in">
+        <div class="caller-info">
+          <!-- Placeholder image or icon -->
+          <div class="robot-icon">🏦</div>
+          <p>On call with</p>
+          <h1>IVR System</h1>
+          <span id="timer">00:00</span>
+           <!-- Session Info -->
+           <div class="session-info-call">
+             <span class="session-id" id="sessionId">Session: ...</span>
+             <span class="status ready" id="status">Ready</span>
+           </div>
         </div>
 
-        <div class="display">
-            <div class="session-info">
-                <span class="session-id" id="sessionId">Session: Loading...</span>
-                <span class="status ready" id="status">Ready</span>
-            </div>
-            <div class="response placeholder" id="response">
-                Press 1 for balance. 2 for recharge. 3 for last transaction. 4 for loan info. 5 for an agent. 6 to update details. 7 to cancel. 9 to repeat this menu.
-            </div>
+        <div class="call-controls glass">
+          <button class="control-btn" aria-label="Mute">
+            <i class="fas fa-microphone-slash"></i><span>Mute</span>
+          </button>
+          <button id="keypad-toggle-btn" class="control-btn" aria-label="Keypad">
+            <i class="fas fa-th"></i><span>Keypad</span>
+          </button>
+          <button class="control-btn" aria-label="Speaker">
+            <i class="fas fa-volume-up"></i><span>Speaker</span>
+          </button>
+          <button id="talk-btn-main" class="control-btn pulse" aria-label="Talk">
+            <i class="fas fa-microphone"></i><span>Talk</span>
+          </button>
+          <button class="control-btn" aria-label="Add call">
+            <i class="fas fa-plus"></i><span>Add Call</span>
+          </button>
+          <button class="hangup-btn main-hangup" aria-label="End Call">
+            <i class="fas fa-phone-slash"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Keypad Screen -->
+      <div id="keypad-screen" class="screen fade-in">
+        <!-- Transcript Area -->
+        <div id="transcript" class="transcript">
+            <!-- Messages will be added here by JS -->
         </div>
 
-        <div class="dialpad">
-            <button class="dial-button" data-digit="1">
-                <div class="digit">1</div>
-                <div class="label">Balance</div>
-            </button>
-            <button class="dial-button" data-digit="2">
-                <div class="digit">2</div>
-                <div class="label">Recharge</div>
-            </button>
-            <button class="dial-button" data-digit="3">
-                <div class="digit">3</div>
-                <div class="label">Last Trans</div>
-            </button>
-            <button class="dial-button" data-digit="4">
-                <div class="digit">4</div>
-                <div class="label">Loan Info</div>
-            </button>
-            <button class="dial-button" data-digit="5">
-                <div class="digit">5</div>
-                <div class="label">Agent</div>
-            </button>
-            <button class="dial-button" data-digit="6">
-                <div class="digit">6</div>
-                <div class="label">Update</div>
-            </button>
-            <button class="dial-button" data-digit="7">
-                <div class="digit">7</div>
-                <div class="label">Cancel</div>
-            </button>
-            <button class="dial-button" data-digit="8">
-                <div class="digit">8</div>
-                <div class="label">---</div>
-            </button>
-            <button class="dial-button" data-digit="9">
-                <div class="digit">9</div>
-                <div class="label">Menu</div>
-            </button>
+        <!-- Dialpad -->
+        <div class="keypad">
+           <!-- Buttons 1-9 -->
+           <button class="key" data-digit="1">1<span>Balance</span></button>
+           <button class="key" data-digit="2">2<span>Recharge</span></button>
+           <button class="key" data-digit="3">3<span>Last Txn</span></button>
+           <button class="key" data-digit="4">4<span>Loan Info</span></button>
+           <button class="key" data-digit="5">5<span>Agent</span></button>
+           <button class="key" data-digit="6">6<span>Update</span></button>
+           <button class="key" data-digit="7">7<span>Cancel</span></button>
+           <button class="key" data-digit="8">8<span>---</span></button>
+           <button class="key" data-digit="9">9<span>Menu</span></button>
+           <!-- Placeholder/empty buttons to fill grid if needed -->
+           <button class="key hidden"></button>
+           <button class="key hidden">0</button>
+           <button class="key hidden"></button>
         </div>
 
-        <!-- Voice Command Section -->
-        <div class="voice-section">
-            <button class="voice-button" id="voiceButton" onclick="toggleVoiceRecording()">
-                <div class="voice-icon" id="voiceIcon">🎤</div>
-                <div class="voice-label" id="voiceLabel">Voice Command</div>
+        <!-- Keypad Controls -->
+        <div class="keypad-controls glass">
+            <button id="talk-btn-keypad" class="control-btn round pulse" aria-label="Talk">
+                <i class="fas fa-microphone"></i>
             </button>
-            <div class="voice-status" id="voiceStatus"></div>
+             <button class="hangup-btn round" aria-label="End Call">
+                <i class="fas fa-phone-slash"></i>
+            </button>
+            <button id="hide-keypad-btn" class="control-btn round" aria-label="Hide Keypad">
+                 <i class="fas fa-th"></i>
+            </button>
         </div>
-
-        <div class="footer">
-            <p>Backend: localhost:3000 | Frontend: IVR Dialpad Interface</p>
-        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
