@@ -1,293 +1,376 @@
-/* IVR System Frontend Styles */
+/* Reset and Base Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+  --bg-dark: #0d0d0f;
+  --bg-light: #2c2c2e; /* Slightly lighter dark */
+  --primary-red: #ff3b30;
+  --primary-blue: #007aff;
+  --primary-green: #34c759; /* iOS Green */
+  --text-primary: #ffffff;
+  --text-secondary: #8e8e93; /* iOS Secondary Text */
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --glass-bg: rgba(60, 60, 67, 0.7); /* iOS Glass */
+  --blur: 10px;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #3a3a3c, #0b0b0c); /* Darker gradient */
+  font-family: var(--font-main);
+  color: var(--text-primary);
+  overflow: hidden; /* Prevent scrolling */
 }
 
-.container {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    max-width: 400px;
-    width: 100%;
+/* Phone Structure */
+.phone {
+  width: 375px; /* iPhone width */
+  height: 812px; /* iPhone height */
+  background: #000; /* Black phone body */
+  border-radius: 40px; /* Rounded corners */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75); /* Stronger shadow */
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 8px solid #1c1c1e; /* Phone bezel */
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 30px;
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur)); /* Safari support */
 }
 
-.header h1 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 10px;
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem; /* Adjusted padding */
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  color: var(--text-primary); /* White text for status bar */
+  border: none; /* No border for status bar */
+}
+.status-bar div i {
+    margin-left: 5px;
 }
 
-.header p {
-    color: #666;
-    font-size: 14px;
+
+/* Screen Management */
+.screen {
+  width: 100%;
+  height: 100%;
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 3.5rem; /* Space below status bar */
+  position: absolute; /* Allow screens to overlap */
+  top: 0;
+  left: 0;
+  background: var(--bg-dark); /* Dark background for screens */
 }
 
-.display {
-    background: #f8f9fa;
+.screen.active {
+  display: flex; /* Show active screen */
+  z-index: 2; /* Bring active screen to front */
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Call Screen Specific Styles */
+#call-screen {
+  background: linear-gradient(180deg, #2c2c2e, #1c1c1e); /* Subtle gradient */
+}
+
+.caller-info {
+  text-align: center;
+  padding-top: 4rem; /* More space at top */
+  flex-grow: 1; /* Allow info to take up space */
+}
+
+.robot-icon {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.caller-info p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.caller-info h1 {
+  font-size: 1.8rem; /* Slightly smaller */
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.caller-info #timer {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.session-info-call {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+}
+.session-info-call .session-id,
+.session-info-call .status {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 3px 8px;
     border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    min-height: 80px;
-    border: 2px solid #e9ecef;
+    margin: 0 5px;
+}
+.session-info-call .status.ready { color: #34c759; }
+.session-info-call .status.processing { color: #ff9500; }
+.session-info-call .status.error { color: #ff3b30; }
+
+
+.call-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem 1.5rem 2.5rem; /* More bottom padding */
+  border-radius: 30px 30px 0 0; /* Rounded top corners */
+  margin: 0 10px; /* Indent from phone edges */
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
 }
 
-.session-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+.control-btn {
+  border: none;
+  color: var(--text-primary);
+  background: var(--bg-light);
+  border-radius: 50%; /* Make buttons circular */
+  font-size: 0.7rem; /* Smaller text */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1; /* Make button square/circle */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  padding-top: 5px; /* Adjust icon position */
+}
+.control-btn:active {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(0.95);
 }
 
-.session-id {
-    font-size: 12px;
-    color: #6c757d;
-    background: #e9ecef;
-    padding: 4px 8px;
-    border-radius: 4px;
+.control-btn i {
+  font-size: 1.4rem; /* Icon size */
+  margin-bottom: 0.3rem;
+}
+.control-btn span {
+    margin-top: 2px;
 }
 
-.status {
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: bold;
+.main-hangup {
+  grid-column: 2 / 3; /* Center hangup button */
+  grid-row: 2 / 3;
+  background: var(--primary-red);
 }
 
-.status.ready {
-    background: #d1edff;
-    color: #0066cc;
+.hangup-btn {
+   background: var(--primary-red);
+   color: white;
+   border: none;
+   cursor: pointer;
+   transition: background-color 0.2s ease, transform 0.1s ease;
+   border-radius: 50%;
+   aspect-ratio: 1;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+.hangup-btn i {
+    font-size: 1.6rem;
+}
+.hangup-btn:active {
+    background-color: #d13026;
+    transform: scale(0.95);
 }
 
-.status.processing {
-    background: #fff3cd;
-    color: #856404;
+/* Keypad Screen Specific Styles */
+#keypad-screen {
+    justify-content: flex-end; /* Align keypad and controls to bottom */
+    padding-top: 3.5rem;
 }
 
-.status.error {
-    background: #f8d7da;
-    color: #721c24;
+.transcript {
+  flex: 1; /* Take remaining space */
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-.response {
-    font-size: 14px;
-    color: #333;
-    line-height: 1.4;
-    min-height: 40px;
+.transcript p {
+  padding: 0.6rem 1rem; /* Slightly smaller padding */
+  border-radius: 18px; /* iOS bubble style */
+  max-width: 75%;
+  line-height: 1.4;
+  font-size: 0.9rem;
+  word-wrap: break-word; /* Ensure long words break */
 }
 
-.response.placeholder {
-    color: #6c757d;
-    font-style: italic;
+.user-message {
+  background: var(--primary-blue); /* Blue for user */
+  color: var(--text-primary);
+  align-self: flex-end;
+  border-bottom-right-radius: 5px; /* iOS style */
 }
 
-/* Dialpad Styles */
-.dialpad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+.bot-message {
+  background: var(--bg-light); /* Grey for bot */
+  color: var(--text-primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 5px; /* iOS style */
 }
 
-.dial-button {
-    aspect-ratio: 1;
-    border: none;
-    border-radius: 50%;
-    background: linear-gradient(145deg, #f0f0f0, #cacaca);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem; /* Slightly smaller gap */
+  padding: 0 1.5rem 1rem; /* Adjust padding */
 }
 
-.dial-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(145deg, #e0e0e0, #bdbdbd);
+.key {
+  min-width: 70px; /* Minimum size */
+  height: 70px; /* Fixed height */
+  background: var(--bg-light);
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-primary);
+  font-size: 1.6rem; /* Larger number */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-weight: 400;
+  line-height: 1;
+}
+.key:active {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(0.95);
 }
 
-.dial-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.key span {
+  font-size: 0.6rem; /* Smaller label */
+  color: var(--text-primary);
+  margin-top: 2px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.dial-button.pressed {
-    background: linear-gradient(145deg, #4CAF50, #45a049);
-    color: white;
-    animation: press-animation 0.2s ease;
+.key.hidden {
+    background: transparent;
+    cursor: default;
+    opacity: 0;
+}
+.key.hidden:active {
+    background: transparent;
+    transform: none;
 }
 
-.dial-button .digit {
-    font-size: 28px;
-    font-weight: bold;
+
+.keypad-controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1rem 1.5rem 2.5rem; /* Match call controls padding */
+  border-radius: 30px 30px 0 0;
+  margin: 0 10px;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
 }
 
-.dial-button .label {
-    font-size: 10px;
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    opacity: 0.7;
+.keypad-controls .control-btn.round,
+.keypad-controls .hangup-btn.round {
+  width: 70px; /* Match key size */
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  padding: 0; /* Remove padding for round buttons */
+}
+.keypad-controls .control-btn.round span {
+    display: none; /* Hide text on round keypad controls */
+}
+.keypad-controls .control-btn.round i {
+    margin-bottom: 0; /* Center icon */
+    font-size: 1.5rem;
+}
+.keypad-controls .hangup-btn.round i {
+    font-size: 1.7rem;
 }
 
-@keyframes press-animation {
-    0% { transform: scale(1); }
-    50% { transform: scale(0.95); }
-    100% { transform: scale(1); }
+
+/* Pulse Animation for Talk Buttons */
+.pulse {
+  animation: pulseEffect 2s infinite ease-in-out;
 }
 
-/* Loading Animation */
-.loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-right: 10px;
+@keyframes pulseEffect {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4); } /* iOS Green */
+  70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+#talk-btn-main, #talk-btn-keypad {
+    background-color: var(--primary-green);
+}
+#talk-btn-main:active, #talk-btn-keypad:active {
+    background-color: #2ca549;
 }
 
-/* Footer */
-.footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 12px;
-    color: #666;
+/* Status styles used by JS */
+.status.ready { color: var(--primary-green); }
+.status.processing { color: #ff9500; } /* iOS Orange */
+.status.error { color: var(--primary-red); }
+
+/* Pressed state for dialpad keys */
+.key.pressed {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(0.95);
 }
 
-/* Voice Command Styles */
-.voice-section {
-    margin: 20px 0;
-    text-align: center;
+/* Recording active state for talk buttons */
+.control-btn.recording-active {
+    background-color: var(--primary-red); /* Red when recording */
+    animation: none; /* Stop pulsing */
 }
-
-.voice-button {
-    background: linear-gradient(145deg, #28a745, #20c997);
-    border: none;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-.voice-button:hover {
-    background: linear-gradient(145deg, #20c997, #17a2b8);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-}
-
-.voice-button.recording {
-    background: linear-gradient(145deg, #dc3545, #c82333);
-    animation: pulse 1.5s infinite;
-}
-
-.voice-button.processing {
-    background: linear-gradient(145deg, #ffc107, #fd7e14);
-    animation: spin 2s linear infinite;
-}
-
-.voice-button.processing .voice-label {
-    animation: counter-spin 2s linear infinite;
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); }
-    50% { box-shadow: 0 6px 25px rgba(220, 53, 69, 0.6); }
-    100% { box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); }
-}
-
-@keyframes processing-glow {
-    0% { 
-        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
-        transform: scale(1);
-    }
-    50% { 
-        box-shadow: 0 6px 25px rgba(255, 193, 7, 0.7);
-        transform: scale(1.05);
-    }
-    100% { 
-        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
-        transform: scale(1);
-    }
-}
-
-@keyframes counter-spin {
-    0% { transform: translateX(-50%) rotate(0deg); }
-    100% { transform: translateX(-50%) rotate(-360deg); }
-}
-
-.voice-icon {
-    font-size: 24px;
-    margin-bottom: 5px;
-}
-
-.voice-label {
-    font-size: 10px;
-    color: white;
-    font-weight: bold;
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-}
-
-.voice-status {
-    margin-top: 10px;
-    font-size: 12px;
-    color: #666;
-    min-height: 20px;
-}
-
-.voice-status.recording {
-    color: #dc3545;
-    font-weight: bold;
-}
-
-.voice-status.processing {
-    color: #ffc107;
-    font-weight: bold;
-}
-
-.voice-status.success {
-    color: #28a745;
-    font-weight: bold;
-}
-
-.voice-status.error {
-    color: #dc3545;
-    font-weight: bold;
+.control-btn.recording-active:active {
+    background-color: #d13026;
 }
